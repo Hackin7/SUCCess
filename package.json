@@ -9,13 +9,37 @@
     "web": "expo start --web"
   },
   "dependencies": {
-    "expo": "~48.0.18",
-    "expo-status-bar": "~1.4.4",
-    "react": "18.2.0",
-    "react-native": "0.71.8"
+    "@react-native-cookies/cookies": "^6.2.1",
+    "@react-navigation/bottom-tabs": "^6.3.2",
+    "@react-navigation/native": "^6.0.11",
+    "@react-navigation/stack": "^6.2.2",
+    "expo": "~46.0.6",
+    "expo-auth-session": "~3.7.1",
+    "expo-checkbox": "~2.2.0",
+    "expo-intent-launcher": "~10.3.0",
+    "expo-random": "~12.3.0",
+    "expo-status-bar": "~1.4.0",
+    "expo-storage": "^46.0.0",
+    "expo-updates": "~0.14.4",
+    "expo-web-browser": "~11.0.0",
+    "moment": "^2.29.4",
+    "react": "18.0.0",
+    "react-native": "0.69.9",
+    "react-native-calendar-picker": "^7.1.2",
+    "react-native-dialog": "^9.2.2",
+    "react-native-element-dropdown": "^2.1.0",
+    "react-native-gesture-handler": "~2.5.0",
+    "react-native-paper": "^4.12.4",
+    "react-native-safe-area-context": "4.3.1",
+    "react-native-svg": "12.3.0",
+    "react-native-table-component": "^1.2.2",
+    "react-native-webview": "11.23.0",
+    "react-native-wheel-color-picker": "^1.2.0",
+    "react-navigation": "^4.4.4"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.0"
+    "@babel/core": "^7.20.0",
+    "react-native-svg-transformer": "^1.0.0"
   },
   "private": true
 }
