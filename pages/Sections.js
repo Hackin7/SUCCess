@@ -7,33 +7,41 @@ import {
 } from 'react-native';
 import CalendarPicker from 'react-native-calendar-picker';
 import { mondaysInMonth, addDays, convertDate} from '../helpers/dateHelpers.js';
+import { createStackNavigator } from '@react-navigation/stack';
+import { Events } from './Events';
 
 import LogoCal from '../assets/Icons/calendar.svg';
 import LogoWork from '../assets/Icons/work.svg';
 import LogoStudy from '../assets/Icons/study.svg';
 import LogoTravel from '../assets/Icons/travel.svg';
 //// Viewing Rations ////////////////////////////////////////////////////
-function Sections({navigation, route}){
+function ItemsList({navigation, route}){
     const [date, setDate] = useState();
-    
+    function clickUser(thing){
+      return () => {
+        navigation.navigate("Events", {
+            eventName: thing, 
+        });
+      }
+    }
     return (
       <ScrollView style={{"margin":"auto", padding: 20}}>
           <View style={{flexDirection: 'row', width: Dimensions.get('window').width-40, justifyContent: 'center'}}>
-              <TouchableOpacity style={styles.button} onPress={()=>{}}>
+              <TouchableOpacity style={styles.button} onPress={clickUser('Work')}>
                 <LogoWork width={70} height={70}/>
                 <Text>Work/ Internships</Text>
               </TouchableOpacity>
-              <TouchableOpacity  style={styles.button} onPress={()=>{}}>
+              <TouchableOpacity  style={styles.button} onPress={clickUser('Study')}>
                 <LogoStudy width={70} height={70}/>
                 <Text>Study/ Prepatory Courses</Text>
               </TouchableOpacity>
           </View>
           <View style={{flexDirection: 'row', width: Dimensions.get('window').width-40, justifyContent: 'center'}}>
-              <TouchableOpacity style={styles.button} onPress={()=>{}}>
+              <TouchableOpacity style={styles.button} onPress={clickUser("Travel")}>
                 <LogoTravel width={70} height={70}/>
                 <Text>Travel Plans</Text>
               </TouchableOpacity>
-              <TouchableOpacity  style={styles.button} onPress={()=>{}}>
+              <TouchableOpacity  style={styles.button} onPress={clickUser("Scholarship")}>
                 {/*<Image source={Camera} style={styles.image} />*/}
                 <LogoStudy width={70} height={70}/>
                 <Text>Scholarship</Text>
@@ -41,6 +49,21 @@ function Sections({navigation, route}){
           </View>
       </ScrollView>
     );
+}
+
+function Sections({navigation, route}){
+  useEffect(() => {
+      navigation.setOptions({
+          headerShown: false
+      });
+  });
+  const Stack = createStackNavigator();
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="ItemsList" component={ItemsList}/>
+      <Stack.Screen name="Events" component={Events}/>
+    </Stack.Navigator>
+  );
 }
 
 const styles = StyleSheet.create({

@@ -8,65 +8,51 @@ import {
 import CalendarPicker from 'react-native-calendar-picker';
 import { mondaysInMonth, addDays, convertDate} from '../helpers/dateHelpers.js';
 import LogoDSTA from '../assets/Icons/dsta.svg';
-import Storage from 'expo-storage';
 //// Viewing Rations ////////////////////////////////////////////////////
-
-
-function ListCustom(props){
-  const data = props.data;
-  return <>
-    {data.map((Objective)=><TouchableOpacity style={styles.element} onPress={()=>{}}>
-      {/*<Image source={Gallery} style={styles.image} />*/}
-      <Objective.Logo height={100}/>
-      <View style={{width: 10, height: 20}} />
-      <Text style={{width: "100%"}}>{Objective.text}</Text>
-    </TouchableOpacity>)}
-    </>;
-}
-
-function Home({navigation, route}){
+function Events({navigation, route}){
     const [date, setDate] = useState();
     
-    const [storedData, setStoredData] = useState([]); 
-    
+    const [title, setTitle] = useState(route.params.eventName)
+    const [Data, setData] = useState([{Logo:LogoDSTA, text:'Hello'}, {Logo:LogoDSTA, text:'Hello'}, {Logo:LogoDSTA, text:'Hello'}]);
     useEffect(()=>{
-        //Storage.setItem('data', JSON.stringify([{Logo: LogoDSTA, text: 'DSTA Internship - Apply in August/ September'}]));
-        Storage.getItem({ key: `data`}).then((value)=>{
-          let data = JSON.parse(value);
-          console.log(data);
-          if (data){
-              setStoredData( data );
-          }else{
-              let stuff = [{Logo: LogoDSTA, text: 'DSTA Internship - Apply in August/ September'}];
-              Storage.setItem('data', JSON.stringify(stuff)).catch((err)=>{console.log(err);});
-              setStoredData(stuff);
-          }
-        }).catch((err)=>{console.log(err);});
+      switch (route.params.eventName){
+        case "Work":
+          setData([
+            {Logo:LogoDSTA, text: 'DSTA Internship - Apply in August/ September'},
+            {Logo:LogoDSTA, text: 'GovTech Internship - Apply in November'}
+          ]);
+          break;
+        case "Study":
+          setData([
+            {Logo:LogoDSTA, text: 'NUS iBLOCS CS1010X - Register in October'},
+            {Logo:LogoDSTA, text: 'NUS Advanced Placement Test (APT) MA1505 - Register in May, Test in end June'},
+            {Logo:LogoDSTA, text: 'NUS Special Term 2 - Register in March, June-July'}
+          ]);
+          break;
+        case "Travel":
+          setData([
+            {Logo:LogoDSTA, text: 'Japan'},
+            {Logo:LogoDSTA, text: 'Korea'}
+          ]);
+          break;
+      }
     }, [navigation]);
-    
     return (
       <ScrollView>
-      <Text style={{padding:10}}>
-        {/*`Select ${date ? convertDate(new Date(date)): "null"} to ${date ? convertDate(addDays(new Date(date), 6)): "null"}`*/}
-      </Text>
-      <CalendarPicker
-          weekdays={["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"]}
-          onDateChange={setDate}
-          startFromMonday={true}
-          disabledDates={date => {
-            let [year, month, day] = JSON.stringify(date).slice(1,11).split('-');
-            //let mondays = mondaysInMonth(parseInt(month), parseInt(year));
-            //if (mondays.includes(parseInt(day))) return false;
-            return false;
-          }}
-        />
-          
-          <Text style={{marginLeft:20,marginTop:10, fontSize:20, fontWeight: 'bold'}}>Upcoming Events</Text>
+          <Text style={{marginLeft:20,marginTop:10, fontSize:20, fontWeight: 'bold'}}>
+            {title}
+          </Text>
           <View style={{alignItems: 'center',
             flex: 1,
             justifyContent: 'center', padding:10}}
           >
-              <ListCustom data={storedData}/>
+            
+              {Data.map((Objective)=><TouchableOpacity style={styles.element} onPress={()=>{}}>
+                {/*<Image source={Gallery} style={styles.image} />*/}
+                <Objective.Logo height={100}/>
+                <View style={{width: 10, height: 20}} />
+                <Text>{Objective.text}</Text>
+              </TouchableOpacity>)}
           </View>
           
       </ScrollView>
@@ -139,4 +125,4 @@ const styles = StyleSheet.create({
 });
 
 
-export {Home};
+export {Events};

@@ -11,6 +11,7 @@ import Storage from 'expo-storage';
 import {ICCalendar, ICItem} from './assets/Icons';
 import {Home} from './pages/Home';
 import {Sections} from './pages/Sections';
+import {Chat} from './pages/Chat';
 
 function Main({navigation, route}) {
   /*const cookie = route.params.cookie;
@@ -19,7 +20,6 @@ function Main({navigation, route}) {
           headerShown: false 
       });
   });*/
-  
   //// Setting Profile Data on Start ///////////////////////////////////
   useEffect(()=>{
   }, [navigation]);
@@ -50,6 +50,7 @@ function Main({navigation, route}) {
     >
       <Tab.Screen name="Home" component={Home}/>
       <Tab.Screen name="Activities" component={Sections}/>
+      <Tab.Screen name="ChatGPT" component={Chat}/>
     </Tab.Navigator>
   );
 }
