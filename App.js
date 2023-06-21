@@ -9,6 +9,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Storage from "expo-storage";
 
 import { ICCalendar, ICItem } from "./assets/Icons";
+import Send from "./assets/Icons/send-dark";
 import { Home } from "./pages/Home";
 import { Sections } from "./pages/Sections";
 import { Chat } from "./pages/Chat";
@@ -42,7 +43,7 @@ function Main({ navigation, route }) {
           }
 
           // You can return any component that you like here!
-          return <ICItem width={30} height={30} />;
+          return <Send width={30} height={30} />;
         },
         tabBarActiveTintColor: "tomato",
         tabBarInactiveTintColor: "gray",

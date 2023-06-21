@@ -8,6 +8,7 @@ import {
   View,
   Button,
   ScrollView,
+  Alert,
 } from "react-native";
 
 import { NavigationContainer, useFocusEffect } from "@react-navigation/native";
@@ -39,9 +40,9 @@ const monthMapping = [
   "Dec",
 ];
 
-function BottomNavigation({ backCallback, nextCallback }) {
+function BottomNavigation({ backCallback, nextCallback, backText, nextText }) {
   return (
-    <>
+    <View>
       {backCallback ? (
         <Button
           onPress={backCallback}
@@ -63,6 +64,7 @@ function BottomNavigation({ backCallback, nextCallback }) {
       ) : (
         <></>
       )}
+      {backCallback ? <View style={{ padding: 5 }}></View> : <></>}
       <Button
         onPress={nextCallback}
         color="#696969"
@@ -80,7 +82,7 @@ function BottomNavigation({ backCallback, nextCallback }) {
         }}
         title="Proceed"
       />
-    </>
+    </View>
   );
 }
 function TypeFormRipoff({ navigation, prompt, tip, field }) {
@@ -114,22 +116,23 @@ function Start({ navigation }) {
       prompt="SUCCess"
       tip="Unlock your potential"
       field={
-        <>
+        <View style={{}}>
           <Button
             onPress={() => {
               navigation.navigate("Main");
             }}
             color="#696969"
             style={{ backgroundColor: "#696969", marginTop: 50 }}
-            title="To Main Page"
+            title="Home Page"
           />
+          <View style={{ padding: 5 }}></View>
           <Button
             onPress={loginThroughNsPortal}
             color="#696969"
             style={{ backgroundColor: "#696969", marginTop: 50 }}
             title="Proceed to Profile Curation"
           />
-        </>
+        </View>
       }
     />
   );
@@ -144,6 +147,14 @@ function BasicDetails({ navigation }) {
       ordMonth: fieldVars[1][0],
       interest: fieldVars[2][0],
     };
+    if (
+      fieldVars[1][0] === "" ||
+      fieldVars[0][0] === "" ||
+      fieldVars[2][0] === ""
+    ) {
+      Alert.alert("Error", "Please fill in all fields");
+      return;
+    }
     navigation.navigate("MonthPlanning", { data: dataFormat });
   };
   const fields = [
@@ -169,7 +180,13 @@ function BasicDetails({ navigation }) {
     {
       name: "Interest",
       key: "interest",
-      options: ["Math/Science", "Engineering", "Computing"],
+      options: [
+        "Math/Science",
+        "Engineering",
+        "Computing",
+        "Social Science",
+        "Business",
+      ],
     },
     //{name:"Uni  Month", key:'startDate', options:["Oct", "Nov", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"]},
   ];
@@ -235,12 +252,23 @@ function MonthPlanning({ navigation, route }) {
               style={{
                 padding: 10,
                 fontSize: 18,
-                height: 44,
+                height: 45,
                 flexDirection: "row",
               }}
               key={index}
             >
-              <Text style={styles.monthText}>{element}:</Text>
+              <Text
+                style={{
+                  fontSize: 18,
+                  fontWeight: "bold",
+                  color: "#333",
+                  textAlign: "center",
+                  height: 50,
+                }}
+              >
+                {element}:
+              </Text>
+              <View style={{ padding: 5 }} />
               <View style={styles.dropDownContainer}>
                 <Dropdown
                   data={[
@@ -265,6 +293,7 @@ function MonthPlanning({ navigation, route }) {
               </View>
             </View>
           ))}
+          <View style={{ padding: 5 }} />
           <BottomNavigation
             nextCallback={() => {
               next();
@@ -377,7 +406,7 @@ function MonthPlanningFeedback({ navigation, route }) {
           style={{
             fontSize: 24,
             margin: 10,
-            maxWidth: "80%",
+            maxWidth: "90%",
             textAlign: "center",
           }}
         >
@@ -412,6 +441,7 @@ function MonthPlanningFeedback({ navigation, route }) {
           </TableWrapper>
         </Table>
       </View>
+      <View style={{ padding: 5 }} />
       <BottomNavigation
         backCallback={() => navigation.goBack()}
         nextCallback={save}
@@ -460,7 +490,7 @@ function Setup({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20, paddingTop: 20, backgroundColor: "#fff" },
+  container: { flex: 1, padding: 20, paddingTop: 0, backgroundColor: "#fff" },
   head: { height: 50, backgroundColor: "#ffe0f0" },
   text: { textAlign: "center" },
   wrapper: { flexDirection: "row" },
@@ -471,6 +501,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#333",
     textAlign: "center",
+    height: 50,
   },
   dropDownContainer: {
     backgroundColor: "#fff",
@@ -485,6 +516,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 2,
     elevation: 2,
+    height: 35,
+    paddingBottom: 10,
   },
   error: {
     flex: 1,

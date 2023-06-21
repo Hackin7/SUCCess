@@ -12,7 +12,7 @@ export const SplashScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       {/* Add your logo or image here */}
-      <Image source={require("../assets/splash.png")} style={styles.logo} />
+      <Image source={require("../assets/icon.png")} style={styles.logo} />
     </View>
   );
 };
@@ -26,6 +26,6 @@ const styles = StyleSheet.create({
   },
   logo: {
     width: 200, // Adjust the width of your logo or image
-    height: 120, // Adjust the height of your logo or image
+    height: 200, // Adjust the height of your logo or image
   },
 });

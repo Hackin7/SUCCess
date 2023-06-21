@@ -10,11 +10,20 @@ import { mondaysInMonth, addDays, convertDate} from '../helpers/dateHelpers.js';
 import LogoDSTA from '../assets/Icons/dsta.svg';
 import Storage from 'expo-storage';
 import { ListCustom } from '../components/ListItem';
+import { EventDescription } from './Section/Description';
+import { createStackNavigator } from "@react-navigation/stack";
 //// Viewing Rations ////////////////////////////////////////////////////
 
 import { useIsFocused } from "@react-navigation/native";
 
-function Home({navigation, route}){
+function HomePage({navigation, route}){
+  
+  useEffect(() => {
+      navigation.setOptions({
+          title: 'Home',
+          headerLeft: ()=> null,
+      });
+  });
     const [date, setDate] = useState();
     
     const isFocused = useIsFocused();
@@ -84,7 +93,13 @@ function Home({navigation, route}){
             flex: 1,
             justifyContent: 'center', padding:10}}
           >
-              <ListCustom data={eventData}/>
+              <ListCustom
+                data={eventData.map(x => ({
+                ...x, 
+                callback: ()=> {
+                  navigation.navigate("Description", {event:x});
+                }}))}
+              />
               {/*JSON.parse(JSON.stringify(eventData)).map((Objective, index)=><TouchableOpacity key={index} style={styles.element} onPress={Objective.callback ? Objective.callback : ()=>{console.log(Objective);}}>
       <Objective.Logo height={100} width={50}/>
       <View style={{width: 10, height: 20}} />
@@ -95,6 +110,27 @@ function Home({navigation, route}){
           
       </ScrollView>
     );
+}
+
+function Home({navigation, route}){
+  
+  useEffect(() => {
+      navigation.setOptions({
+          headerShown: false,
+          //title: 'MyScreen',
+          headerLeft: ()=> null,
+      });
+  });
+  const Stack = createStackNavigator();
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="HomePage"
+        component={HomePage}
+      />
+      <Stack.Screen name="Description" component={EventDescription}/>
+    </Stack.Navigator>
+  );
 }
 
 const styles = StyleSheet.create({
