@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "SUCCess",
-    "slug": "SUCCess",
+    "slug": "success",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -15,16 +15,24 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.frostylegend.success"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.frostylegend.success"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "4e5b98b1-fa73-495c-a831-ffdf22ec3db9"
+      }
+    },
+    "owner": "frostylegend"
   }
 }

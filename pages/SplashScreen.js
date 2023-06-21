@@ -26,6 +26,6 @@ const styles = StyleSheet.create({
   },
   logo: {
     width: 200, // Adjust the width of your logo or image
-    height: 200, // Adjust the height of your logo or image
+    height: 120, // Adjust the height of your logo or image
   },
 });

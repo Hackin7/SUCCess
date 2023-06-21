@@ -78,7 +78,7 @@ function BottomNavigation({ backCallback, nextCallback }) {
           shadowRadius: 2,
           elevation: 3,
         }}
-        title="Next"
+        title="Proceed"
       />
     </>
   );
@@ -121,13 +121,13 @@ function Start({ navigation }) {
             }}
             color="#696969"
             style={{ backgroundColor: "#696969", marginTop: 50 }}
-            title="Back"
+            title="To Main Page"
           />
           <Button
             onPress={loginThroughNsPortal}
             color="#696969"
             style={{ backgroundColor: "#696969", marginTop: 50 }}
-            title="Next"
+            title="Proceed to Profile Curation"
           />
         </>
       }
