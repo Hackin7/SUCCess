@@ -8,14 +8,20 @@ import {
 import CalendarPicker from 'react-native-calendar-picker';
 import { mondaysInMonth, addDays, convertDate} from '../helpers/dateHelpers.js';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Events } from './Events';
-
+import { Events } from './Section/Events';
+import { EventDescription } from './Section/Description';
 import LogoCal from '../assets/Icons/calendar.svg';
 import LogoWork from '../assets/Icons/work.svg';
 import LogoStudy from '../assets/Icons/study.svg';
 import LogoTravel from '../assets/Icons/travel.svg';
 //// Viewing Rations ////////////////////////////////////////////////////
 function ItemsList({navigation, route}){
+    useEffect(() => {
+        navigation.setOptions({
+            title:"Activities",
+            headerLeft: ()=> null,
+        });
+    });
     const [date, setDate] = useState();
     function clickUser(thing){
       return () => {
@@ -54,7 +60,9 @@ function ItemsList({navigation, route}){
 function Sections({navigation, route}){
   useEffect(() => {
       navigation.setOptions({
-          headerShown: false
+          headerShown: false,
+          //title: 'MyScreen',
+          headerLeft: ()=> null,
       });
   });
   const Stack = createStackNavigator();
@@ -62,6 +70,7 @@ function Sections({navigation, route}){
     <Stack.Navigator>
       <Stack.Screen name="ItemsList" component={ItemsList}/>
       <Stack.Screen name="Events" component={Events}/>
+      <Stack.Screen name="Description" component={EventDescription}/>
     </Stack.Navigator>
   );
 }

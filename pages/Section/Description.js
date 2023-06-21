@@ -3,58 +3,75 @@ import { useState, useEffect, createRef, useRef } from "react";
 import { StatusBar } from 'expo-status-bar';
 import { 
   StyleSheet, Text, TextInput, View, Button, 
-  TouchableOpacity, ScrollView, Dimensions
+  TouchableOpacity, ScrollView, Dimensions, Linking
 } from 'react-native';
 import CalendarPicker from 'react-native-calendar-picker';
-import { mondaysInMonth, addDays, convertDate} from '../helpers/dateHelpers.js';
-import LogoDSTA from '../assets/Icons/dsta.svg';
+import { mondaysInMonth, addDays, convertDate} from '../../helpers/dateHelpers.js';
+import LogoDSTA from '../../assets/Icons/dsta.svg';
+import { ListCustom } from '../../components/ListItem';
 //// Viewing Rations ////////////////////////////////////////////////////
-function Events({navigation, route}){
+function EventDescription({navigation, route}){
+    const event = route.params.event;
     const [date, setDate] = useState();
     
-    const [title, setTitle] = useState(route.params.eventName)
+    const [title, setTitle] = useState(event.text)
     const [Data, setData] = useState([{Logo:LogoDSTA, text:'Hello'}, {Logo:LogoDSTA, text:'Hello'}, {Logo:LogoDSTA, text:'Hello'}]);
+    const [status, setStatus] = useState(false);
+    
+    const [eventData, setEventData] = useState([])
     useEffect(()=>{
-      switch (route.params.eventName){
-        case "Work":
-          setData([
-            {Logo:LogoDSTA, text: 'DSTA Internship - Apply in August/ September'},
-            {Logo:LogoDSTA, text: 'GovTech Internship - Apply in November'}
-          ]);
-          break;
-        case "Study":
-          setData([
-            {Logo:LogoDSTA, text: 'NUS iBLOCS CS1010X - Register in October'},
-            {Logo:LogoDSTA, text: 'NUS Advanced Placement Test (APT) MA1505 - Register in May, Test in end June'},
-            {Logo:LogoDSTA, text: 'NUS Special Term 2 - Register in March, June-July'}
-          ]);
-          break;
-        case "Travel":
-          setData([
-            {Logo:LogoDSTA, text: 'Japan'},
-            {Logo:LogoDSTA, text: 'Korea'}
-          ]);
-          break;
-      }
+      
     }, [navigation]);
+    
+    const handleClick = () => {
+      Linking.canOpenURL(event.link).then(supported => {
+        if (supported) {
+          Linking.openURL(event.link);
+        } else {
+          console.log("Don't know how to open URI: " + event.link);
+        }
+      });
+    };
+    const updateEventData = (x)=>{
+      setEventData(x);
+    }
+    const addRemove = () =>{
+      if (status){ // Remove
+        const eventDataCopy = [...eventData].filter((value, index, arr) => {
+            if (value === event){
+              arr.splice(index, 1);
+              return true;
+            }
+            return false;
+        });
+        updateEventData(eventDataCopy);
+      }else{
+        const eventDataCopy = [...eventData]
+        eventDataCopy.push(event);
+        updateEventData(eventDataCopy);
+      }
+      setStatus(!status);
+      
+    }
     return (
       <ScrollView>
           <Text style={{marginLeft:20,marginTop:10, fontSize:20, fontWeight: 'bold'}}>
-            {title}
+            {event.title}
           </Text>
-          <View style={{alignItems: 'center',
+          <View style={{padding:20, paddingTop:0, paddingBottom:0}}
+          >
+            <Text>{event.description}</Text>
+          </View>
+          {/*<View style={{alignItems: 'center',
             flex: 1,
             justifyContent: 'center', padding:10}}
           >
-            
-              {Data.map((Objective)=><TouchableOpacity style={styles.element} onPress={()=>{}}>
-                {/*<Image source={Gallery} style={styles.image} />*/}
-                <Objective.Logo height={100}/>
-                <View style={{width: 10, height: 20}} />
-                <Text>{Objective.text}</Text>
-              </TouchableOpacity>)}
+          </View>*/}
+          <View style={{paddingLeft:10, paddingRight:10}} >
+            <Button onPress={handleClick} title={"Read More"} />   
+            <View style={{padding:5}}/>
+            <Button style={{paddingTop:10}} onPress={addRemove} title={status ? "Remove" : "Add"} />   
           </View>
-          
       </ScrollView>
     );
 }
@@ -125,4 +142,4 @@ const styles = StyleSheet.create({
 });
 
 
-export {Events};
+export {EventDescription};

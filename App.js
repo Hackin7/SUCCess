@@ -12,14 +12,15 @@ import {ICCalendar, ICItem} from './assets/Icons';
 import {Home} from './pages/Home';
 import {Sections} from './pages/Sections';
 import {Chat} from './pages/Chat';
+import {Setup} from './pages/Setup';
 
 function Main({navigation, route}) {
-  /*const cookie = route.params.cookie;
+  /*const cookie = route.params.cookie;*/
   useEffect(() => {
       navigation.setOptions({
           headerShown: false 
       });
-  });*/
+  });
   //// Setting Profile Data on Start ///////////////////////////////////
   useEffect(()=>{
   }, [navigation]);
@@ -56,9 +57,13 @@ function Main({navigation, route}) {
 }
 
 export default function App() {
+  const Stack = createStackNavigator();
   return (
     <NavigationContainer>
-      <Main/>
+      <Stack.Navigator>
+        <Stack.Screen name="Setup" component={Setup} />
+        <Stack.Screen name="Main" component={Main} />
+      </Stack.Navigator>
     </NavigationContainer>
   );
     {/*<View style={styles.container}>

@@ -9,27 +9,18 @@ import CalendarPicker from 'react-native-calendar-picker';
 import { mondaysInMonth, addDays, convertDate} from '../helpers/dateHelpers.js';
 import LogoDSTA from '../assets/Icons/dsta.svg';
 import Storage from 'expo-storage';
+import { ListCustom } from '../components/ListItem';
 //// Viewing Rations ////////////////////////////////////////////////////
 
-
-function ListCustom(props){
-  const data = props.data;
-  return <>
-    {data.map((Objective)=><TouchableOpacity style={styles.element} onPress={()=>{}}>
-      {/*<Image source={Gallery} style={styles.image} />*/}
-      <Objective.Logo height={100}/>
-      <View style={{width: 10, height: 20}} />
-      <Text style={{width: "100%"}}>{Objective.text}</Text>
-    </TouchableOpacity>)}
-    </>;
-}
 
 function Home({navigation, route}){
     const [date, setDate] = useState();
     
+    const [userData, setUserData] = useState({name:'User'})
     const [storedData, setStoredData] = useState([]); 
     
     useEffect(()=>{
+        Storage.setItem('data', JSON.stringify([])).catch((err)=>{console.log(err);});
         //Storage.setItem('data', JSON.stringify([{Logo: LogoDSTA, text: 'DSTA Internship - Apply in August/ September'}]));
         Storage.getItem({ key: `data`}).then((value)=>{
           let data = JSON.parse(value);
@@ -37,18 +28,28 @@ function Home({navigation, route}){
           if (data){
               setStoredData( data );
           }else{
-              let stuff = [{Logo: LogoDSTA, text: 'DSTA Internship - Apply in August/ September'}];
+              let stuff = [];
               Storage.setItem('data', JSON.stringify(stuff)).catch((err)=>{console.log(err);});
               setStoredData(stuff);
+          }
+        }).catch((err)=>{console.log(err);});
+        
+        Storage.getItem({ key: `userdata`}).then((value)=>{
+          let data = JSON.parse(value);
+          console.log(data);
+          if (data){
+              setUserData( data );
+          }else{
           }
         }).catch((err)=>{console.log(err);});
     }, [navigation]);
     
     return (
       <ScrollView>
-      <Text style={{padding:10}}>
-        {/*`Select ${date ? convertDate(new Date(date)): "null"} to ${date ? convertDate(addDays(new Date(date), 6)): "null"}`*/}
+      <Text style={{marginLeft:20,marginTop:10, fontSize:20, fontWeight: 'bold'}}>
+        Welcome, {userData.name}{/*`Select ${date ? convertDate(new Date(date)): "null"} to ${date ? convertDate(addDays(new Date(date), 6)): "null"}`*/}
       </Text>
+      <View style={{padding:10}}/>
       <CalendarPicker
           weekdays={["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"]}
           onDateChange={setDate}
@@ -66,7 +67,8 @@ function Home({navigation, route}){
             flex: 1,
             justifyContent: 'center', padding:10}}
           >
-              <ListCustom data={storedData}/>
+              <ListCustom data={[]}/>
+              <Text>{JSON.stringify(storedData)}</Text>
           </View>
           
       </ScrollView>
