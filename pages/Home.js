@@ -12,37 +12,54 @@ import Storage from 'expo-storage';
 import { ListCustom } from '../components/ListItem';
 //// Viewing Rations ////////////////////////////////////////////////////
 
+import { useIsFocused } from "@react-navigation/native";
 
 function Home({navigation, route}){
     const [date, setDate] = useState();
     
-    const [userData, setUserData] = useState({name:'User'})
-    const [storedData, setStoredData] = useState([]); 
+    const isFocused = useIsFocused();
     
+    const [eventData, setEventData] = useState([]); 
     useEffect(()=>{
-        Storage.setItem('data', JSON.stringify([])).catch((err)=>{console.log(err);});
-        //Storage.setItem('data', JSON.stringify([{Logo: LogoDSTA, text: 'DSTA Internship - Apply in August/ September'}]));
-        Storage.getItem({ key: `data`}).then((value)=>{
+        if (!isFocused){return;}
+        Storage.getItem({ key: `eventdata`}).then((value)=>{
           let data = JSON.parse(value);
-          console.log(data);
+          console.log("LoadingEventData", data);
           if (data){
-              setStoredData( data );
+              setEventData( data );
+              console.log("loaded", data);
           }else{
-              let stuff = [];
-              Storage.setItem('data', JSON.stringify(stuff)).catch((err)=>{console.log(err);});
-              setStoredData(stuff);
+              Storage.setItem({key:'eventdata', value: "[]"}).catch((err)=>{
+                console.log(err);
+                console.log("Cannot Save Event Data");
+              });
           }
-        }).catch((err)=>{console.log(err);});
-        
+        }).catch((err)=>{
+            console.log(err);
+            console.log('Updating Event Data');
+            Storage.setItem({key:'eventdata', value: "[]"}).catch((err)=>{
+              console.log(err);
+              console.log("Cannot Save Event Data");
+            });
+        });
+      }, [isFocused]);
+      
+      
+    const [userData, setUserData] = useState({name:'User'})
+    useEffect(()=>{
+        if (!isFocused){return;}
         Storage.getItem({ key: `userdata`}).then((value)=>{
           let data = JSON.parse(value);
-          console.log(data);
+          console.log("userdata", data);
           if (data){
               setUserData( data );
           }else{
           }
-        }).catch((err)=>{console.log(err);});
-    }, [navigation]);
+        }).catch((err)=>{
+          console.log(err);
+          console.log('UserDataIssue');
+        });
+    }, [isFocused]); //[navigation]);
     
     return (
       <ScrollView>
@@ -67,8 +84,13 @@ function Home({navigation, route}){
             flex: 1,
             justifyContent: 'center', padding:10}}
           >
-              <ListCustom data={[]}/>
-              <Text>{JSON.stringify(storedData)}</Text>
+              <ListCustom data={eventData}/>
+              {/*JSON.parse(JSON.stringify(eventData)).map((Objective, index)=><TouchableOpacity key={index} style={styles.element} onPress={Objective.callback ? Objective.callback : ()=>{console.log(Objective);}}>
+      <Objective.Logo height={100} width={50}/>
+      <View style={{width: 10, height: 20}} />
+      <Text style={{width: "60%"}}>{Objective.text}</Text>
+    </TouchableOpacity>)*/}
+              {/*<Text>{JSON.stringify(eventData)}{JSON.stringify(userData)}</Text>*/}
           </View>
           
       </ScrollView>

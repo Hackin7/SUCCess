@@ -7,19 +7,30 @@ import {
 } from 'react-native';
 import CalendarPicker from 'react-native-calendar-picker';
 import { mondaysInMonth, addDays, convertDate} from '../helpers/dateHelpers.js';
-import LogoDSTA from '../assets/Icons/dsta.svg';
 import Storage from 'expo-storage';
+
+import LogoDSTA from '../assets/Icons/dsta.svg';
+import LogoMindef from '../assets/Icons/mindef.svg';
+import LogoAstar from '../assets/Icons/astar.svg';
+import LogoPsc from '../assets/Icons/psc.svg';
+import LogoGovtech from '../assets/Icons/govtech.svg';
+import LogoNus from '../assets/Icons/nus.svg';
 
 function ListCustom(props){
   const data = props.data;
   //if (!data){return <Text>Loading</Text>;}
+  console.log("List Custom", data);
   return <>
-    {data.map((Objective, index)=><TouchableOpacity key={index} style={styles.element} onPress={Objective.callback ? Objective.callback : ()=>{console.log(Objective);}}>
-      {/*<Image source={Gallery} style={styles.image} />*/}
-      <Objective.Logo height={100} width={50}/>
-      <View style={{width: 10, height: 20}} />
-      <Text style={{width: "60%"}}>{Objective.text}</Text>
-    </TouchableOpacity>)}
+    {/*<Text>{JSON.stringify(data)}</Text>*/}
+    {data.map ? data.map((Objective, index)=>{
+      let test = {'DSTA Internship':LogoDSTA, 'GovTech Internship': LogoGovtech, 'A*STAR Attachment in Research Institutes': LogoAstar, 'NUS Internal Blended Learning Online Course (iBLOCs) for Returning Full-time National Service (NS) men': LogoNus, "Public Service Commission Scholarship": LogoPsc, 'Singapore Armed Forces Scholarship': LogoMindef, 'National Science Scholarship - BS': LogoAstar};
+      let Logo = Objective.Logo ? Objective.Logo: (test[Objective.title]? test[Objective.title]: LogoDSTA);
+      return <TouchableOpacity key={index} style={styles.element} onPress={Objective.callback ? Objective.callback : ()=>{console.log(Objective);}}>
+        <Logo height={100} width={50}/>
+        <View style={{width: 10, height: 20}} />
+        <Text style={{width: "60%"}}>{Objective.text}</Text>
+      </TouchableOpacity>
+    }) : <></>}
     </>;
 }
 

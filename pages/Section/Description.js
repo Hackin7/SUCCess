@@ -9,6 +9,17 @@ import CalendarPicker from 'react-native-calendar-picker';
 import { mondaysInMonth, addDays, convertDate} from '../../helpers/dateHelpers.js';
 import LogoDSTA from '../../assets/Icons/dsta.svg';
 import { ListCustom } from '../../components/ListItem';
+
+import Storage from 'expo-storage';
+
+function findObject(arr, obj){
+  for (let i=0; i<arr.length; i++){
+    if (arr[i].text == obj.text){
+      return i;
+    }
+  }
+  return -1;
+}
 //// Viewing Rations ////////////////////////////////////////////////////
 function EventDescription({navigation, route}){
     const event = route.params.event;
@@ -20,8 +31,33 @@ function EventDescription({navigation, route}){
     
     const [eventData, setEventData] = useState([])
     useEffect(()=>{
-      
-    }, [navigation]);
+        Storage.getItem({ key: `eventdata`}).then((value)=>{
+          let data = JSON.parse(value);
+          console.log(data);
+          if (data){
+              console.log("LoadingEventData");
+              setEventData( data );
+          }else{
+              Storage.setItem({key:'eventdata', value: "[]"}).catch((err)=>{
+                console.log(err);
+                console.log("Cannot Save Event Data");
+              });
+          }
+        }).catch((err)=>{
+            console.log(err);
+            console.log('Updating Event Data');
+            Storage.setItem({key:'eventdata', value: "[]"}).catch((err)=>{
+              console.log(err);
+              console.log("Cannot Save Event Data");
+            });
+        });
+      }, [navigation]);
+      useEffect(()=>{
+        const index = findObject(eventData, event);
+        console.log("Event Status");
+        console.log(eventData, index);
+        setStatus(index !== -1);
+      }, [eventData]);
     
     const handleClick = () => {
       Linking.canOpenURL(event.link).then(supported => {
@@ -34,16 +70,21 @@ function EventDescription({navigation, route}){
     };
     const updateEventData = (x)=>{
       setEventData(x);
+     Storage.setItem({key:'eventdata', value: JSON.stringify(x)}).then(()=>{
+       console.log("Success");
+       console.log(x);
+      }).catch((err)=>{
+        console.log(err);
+        console.log("Cannot Save Event Data");
+      });
     }
     const addRemove = () =>{
       if (status){ // Remove
-        const eventDataCopy = [...eventData].filter((value, index, arr) => {
-            if (value === event){
-              arr.splice(index, 1);
-              return true;
-            }
-            return false;
-        });
+        const eventDataCopy = [...eventData]
+        const index = findObject(eventDataCopy, event);
+        if (index > -1) {
+          eventDataCopy.splice(index, 1);
+        }
         updateEventData(eventDataCopy);
       }else{
         const eventDataCopy = [...eventData]
@@ -72,6 +113,7 @@ function EventDescription({navigation, route}){
             <View style={{padding:5}}/>
             <Button style={{paddingTop:10}} onPress={addRemove} title={status ? "Remove" : "Add"} />   
           </View>
+          {/*<Text>{JSON.stringify(eventData)}</Text>*/}
       </ScrollView>
     );
 }
