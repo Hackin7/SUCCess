@@ -23,7 +23,11 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
+<<<<<<< Updated upstream
       "package": "com.frostylegend.success"
+=======
+      "package": "com.hackin7.SUCCess"
+>>>>>>> Stashed changes
     },
     "web": {
       "favicon": "./assets/favicon.png"
