@@ -23,20 +23,16 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-<<<<<<< Updated upstream
-      "package": "com.frostylegend.success"
-=======
       "package": "com.hackin7.SUCCess"
->>>>>>> Stashed changes
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
+    "owner": "hackin7",
     "extra": {
       "eas": {
-        "projectId": "4e5b98b1-fa73-495c-a831-ffdf22ec3db9"
+        "projectId": "e67b3cdf-1435-48c0-946b-47f6e166520c"
       }
-    },
-    "owner": "frostylegend"
+    }
   }
 }
